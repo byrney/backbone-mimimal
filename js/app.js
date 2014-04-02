@@ -53,6 +53,21 @@ app.classes.TreeView = Backbone.View.extend({
 		"click button": "login"
 	},
 
+	login: function() {
+		var login = $.ajax({
+			type: "POST",
+			url: "/dex-dev-mobile/api/login",
+			data: { user_id: "rob", pass: "rob", app: "webexp", version: "0.1"},
+		});
+		login.done(function(){ console.log("logged in") });
+	},
+
+});
+
+app.classes.BrowseModel = Backbone.Model.extend({
+
+	url: "/dex-dev-mobile/api/browse",
+
 });
 
 
@@ -76,6 +91,8 @@ app.classes.AppRouter = Backbone.Router.extend({
 		app.views.tree.render();
 		app.views.versions.render();
 		app.views.document.render();
+		app.models.browse = new app.classes.BrowseModel();
+		app.models.browse.fetch();
 	},
 
 });
