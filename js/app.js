@@ -1,7 +1,7 @@
 var app = {
 	views: {},
 	models: {},
-	routers: {},
+	classes: {},
 
 	init: function(callback) {
 		// app initialization goes here
@@ -9,14 +9,39 @@ var app = {
 	}
 };
 
-app.views.HomeView = Backbone.View.extend({
+app.classes.VersionsView = Backbone.View.extend({
+
+	render: function () {
+		this.$el.html("<h1> Versions </h1>");
+		return this;
+	},
+
+	events: {
+	},
+
+});
+
+app.classes.DocumentView = Backbone.View.extend({
+
+	render: function () {
+		this.$el.html("<h1> Document </h1>");
+		return this;
+	},
+
+	events: {
+	},
+
+});
+
+
+app.classes.TreeView = Backbone.View.extend({
 
 	initialize: function () {
 		// note:  $el will get set by framework
 	},
 
 	render: function () {
-		this.$el.html("<h1> Home View  </h1> <a href='#page2'>Link to page2</a><p><button >A button</button></p>");
+		this.$el.html("<h1> Tree View  </h1> <a href='#page2'>Link to page2</a><p><button >A button</button></p>");
 		return this;
 	},
 
@@ -25,16 +50,19 @@ app.views.HomeView = Backbone.View.extend({
 	},
 
 	events: {
-		"click button": "buttonClicked"
+		"click button": "login"
 	},
 
 });
 
-app.routers.AppRouter = Backbone.Router.extend({
+
+
+app.classes.AppRouter = Backbone.Router.extend({
 
 	routes: {
 		"page2":					"page2",
 		"":							"home",
+		"login":					"login",
 	},
 
 	page2: function() {
@@ -42,9 +70,12 @@ app.routers.AppRouter = Backbone.Router.extend({
 	},
 
 	home: function() {
-		var contentDiv = $('#contents');
-		var v = new app.views.HomeView({el: contentDiv});
-		v.render();
+		app.views.tree = new app.classes.TreeView({el: $('#content-tree') });
+		app.views.versions = new app.classes.VersionsView({el: $('#content-versions') });
+		app.views.document = new app.classes.DocumentView({el: $('#content-document') });
+		app.views.tree.render();
+		app.views.versions.render();
+		app.views.document.render();
 	},
 
 });
@@ -52,7 +83,7 @@ app.routers.AppRouter = Backbone.Router.extend({
 // this is where it all kicks off
 $(document).on("ready", function () {
 	app.init( function () {
-		app.router = new app.routers.AppRouter();
+		app.router = new app.classes.AppRouter();
 		Backbone.history.start();
 	});
 });
